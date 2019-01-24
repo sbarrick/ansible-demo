@@ -1,0 +1,7 @@
+[ansible-vagrant]
+127.0.0.1 ansible_port=2222 ansible_python_interpreter=python3
+
+#[nginx-server]
+
+[vc-server]
+devops-test-barrick-bcay16.veracross.net ansible_user=root

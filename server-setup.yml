@@ -1,0 +1,46 @@
+---
+- hosts: "{{ hostgroup }}"
+  user: test
+  become: yes
+  become_method: sudo
+  vars:
+    packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler, redis-server]
+    exec_path: /home/test/www/current
+    deploy_path: /home/test/www/current
+    repo_path: git@github.com:veracross/barrick-devops-test.git
+  tasks:
+  - name: base package installation
+    apt: 
+      name: "{{ packages }}"
+      state: latest
+  - name: create deployer user # will require additional keys for git 
+    user:
+      name: deployer
+      group: www-data
+      append: yes
+      shell: /bin/bash
+      # add sudo,  add key
+  - name: deploy code
+    git:
+      repo: "{{ repo_path }}"
+      dest: "{{ deploy_path }}"
+      version: master
+      accept_hostkey: yes
+    become: no
+  - name: run blundler
+    bundler:
+      state: present
+      chdir: "{{ exec_path }}"
+  ### Uncomment to run this the server.rb as is ##
+  - name: dirty exec
+    command: bundle exec ruby server.rb 
+    args:
+      chdir: /home/test/www/current
+  
+
+  ### TO DO ##
+  # - name: configure nginx
+  # - name: configure redis    
+  # - name: start services
+  # export REDIS_PW=hithere
+  # ansible vault for redis pw and keys

@@ -10,6 +10,8 @@
     repo_path: git@github.com:veracross/barrick-devops-test.git
     passenger_app_root: /home/test/www/current/public
     git_force: yes
+    redis_requirepass: "hithere"
+    redis_env_var: "REDIS_PW"
   tasks:
   - name: base package installation
     apt: 

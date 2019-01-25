@@ -4,10 +4,12 @@
   become: yes
   become_method: sudo
   vars:
-    packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler, redis-server]
+    packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler ]
     exec_path: /home/test/www/current
     deploy_path: /home/test/www/current
     repo_path: git@github.com:veracross/barrick-devops-test.git
+    passenger_app_root: /home/test/www/current/public
+    git_force: yes
   tasks:
   - name: base package installation
     apt: 
@@ -26,16 +28,29 @@
       dest: "{{ deploy_path }}"
       version: master
       accept_hostkey: yes
+      force: "{{ git_force }}"
     become: no
   - name: run blundler
     bundler:
       state: present
       chdir: "{{ exec_path }}"
+  - name: restart nginx
+    service: 
+      name: nginx
+      state: restarted
+  - name: restart redis
+    service:
+      name: redis-server
+      state: restarted
+  roles:
+    - geerlingguy.passenger
+    - geerlingguy.redis
+
   ### Uncomment to run this the server.rb as is ##
-  - name: dirty exec
-    command: bundle exec ruby server.rb 
-    args:
-      chdir: /home/test/www/current
+  #- name: dirty exec
+  #  command: bundle exec ruby server.rb 
+  #  args:
+  #    chdir: /home/test/www/current
   
 
   ### TO DO ##

@@ -3,8 +3,11 @@
   user: test
   become: yes
   become_method: sudo
+  vars_files:
+    - conf/vars_ansistrano.yml
+    - conf/vars_server_base.yml
+    - conf/vars_prod_deploy.yml
   vars:
-    packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler ]
     exec_path: /home/test/www/current
     deploy_path: /home/test/www/current
     repo_path: git@github.com:veracross/barrick-devops-test.git
@@ -12,18 +15,21 @@
     git_force: yes
     redis_requirepass: "hithere"
     redis_env_var: "REDIS_PW"
+    ana_dest_apth: /home/test/www/prod/current
   tasks:
   - name: base package installation
     apt: 
       name: "{{ packages }}"
       state: latest
-  - name: create deployer user # will require additional keys for git 
+    tags: setup
+  - name: create deploy user # will require additional keys for git 
     user:
-      name: deployer
-      group: www-data
+      name: "{{ deploy_user_name }}"
+      group: "{{ deploy_user_group }}"
+      shell: "{{ deploy_user_shell }}"
       append: yes
-      shell: /bin/bash
       # add sudo,  add key
+    tags: setup
   - name: deploy code
     git:
       repo: "{{ repo_path }}"
@@ -54,10 +60,5 @@
   #  args:
   #    chdir: /home/test/www/current
   
-
-  ### TO DO ##
-  # - name: configure nginx
-  # - name: configure redis    
-  # - name: start services
-  # export REDIS_PW=hithere
+  # todo
   # ansible vault for redis pw and keys

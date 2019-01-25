@@ -1,0 +1,11 @@
+--- # ansistrano dedicated deploy playbook
+- hosts: "{{ hostgroup }}"
+  user: test
+  become: yes
+  become_method: sudo
+  vars_files:
+  - ../conf/vars_ansistrano.yml
+  vars:
+    ansistrano_deploy_via: git
+  roles:
+     - ansistrano.deploy 

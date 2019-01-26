@@ -4,4 +4,4 @@
 #[nginx-server]
 
 [vc-server]
-devops-test-barrick-bcay16.veracross.net ansible_user=root
+devops-test-barrick-bcay16.veracross.net ansible_user=root ansible_python_interpreter=python3

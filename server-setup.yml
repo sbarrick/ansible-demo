@@ -8,14 +8,14 @@
     - conf/vars_server_base.yml
     - conf/vars_prod_deploy.yml
   vars:
-    exec_path: /home/test/www/current
-    deploy_path: /home/test/www/current
+    exec_path: /home/deployer/www/current
+    deploy_path: /home/deployer/www/current
     repo_path: git@github.com:veracross/barrick-devops-test.git
-    passenger_app_root: /home/test/www/current/public
+    passenger_app_root: /home/deployer/www/prod/current/public
     git_force: yes
     redis_requirepass: "hithere"
     redis_env_var: "REDIS_PW"
-    ana_dest_apth: /home/test/www/prod/current
+    ana_dest_apth: /home/deployer/www/prod/current
   tasks:
   - name: base package installation
     apt: 
@@ -28,37 +28,19 @@
       group: "{{ deploy_user_group }}"
       shell: "{{ deploy_user_shell }}"
       append: yes
-      # add sudo,  add key
+      # add key
     tags: setup
-  - name: deploy code
-    git:
-      repo: "{{ repo_path }}"
-      dest: "{{ deploy_path }}"
-      version: master
-      accept_hostkey: yes
-      force: "{{ git_force }}"
-    become: no
-  - name: run blundler
-    bundler:
-      state: present
-      chdir: "{{ exec_path }}"
-  - name: restart nginx
-    service: 
-      name: nginx
-      state: restarted
-  - name: restart redis
-    service:
-      name: redis-server
-      state: restarted
+  - include: inc/sudoer.yml  # creates sudoers.d entry
+  - name: create deploy directorires
+    file:
+      path: "{{ deploy_path }}"
+      state: directory
+      mode: 0775
+      group: "{{ web_user_name }}"
+    tags: setup
   roles:
     - geerlingguy.passenger
     - geerlingguy.redis
 
-  ### Uncomment to run this the server.rb as is ##
-  #- name: dirty exec
-  #  command: bundle exec ruby server.rb 
-  #  args:
-  #    chdir: /home/test/www/current
-  
   # todo
   # ansible vault for redis pw and keys

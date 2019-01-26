@@ -1,11 +1,12 @@
 ---  
 ansistrano_deploy_from: "~/git/barrick-devops-test/" # Where my local project is (relative or absolute path)
-ansistrano_deploy_to: "/home/test/www/prod" # Base path to deploy to.
+ansistrano_deploy_to: "/home/deployer/www/prod" # Base path to deploy to.
 ansistrano_version_dir: "releases" # Releases folder name
 ansistrano_current_dir: "current" # Softlink name. You should rarely changed it.
 ansistrano_current_via: "symlink" # Deployment strategy who code should be deployed to current path. Options are symlink or rsync
 ansistrano_keep_releases: 5 # Releases to keep after a new deployment. See "Pruning old releases".
 ansistrano_release_path: "~/www/prod/"
+exec_path: /home/deployer/www/current
 
   # Arrays of directories and files to be shared.
   # The following arrays of directories and files will be symlinked to the current release directory after the 'update-code' step and its callbacks
@@ -62,6 +63,9 @@ ansistrano_git_depth: 1 # Additional history truncated to the specified number o
 #  ansistrano_before_symlink_shared_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-before-symlink-shared-tasks.yml"
 #  ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-after-symlink-shared-tasks.yml"
 #  ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-before-symlink-tasks.yml"
-#  ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-after-symlink-tasks.yml"
+ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/helloworld/my-after-symlink-tasks.yml"
 #  ansistrano_before_cleanup_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-before-cleanup-tasks.yml"
 #  ansistrano_after_cleanup_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-after-cleanup-tasks.yml"
+
+## rollback vars
+ansistrano_rollback_after_symlink_tasks_file: "{{ playbook_dir }}/helloworld/my-after-symlink-tasks.yml"

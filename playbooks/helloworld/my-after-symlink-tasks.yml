@@ -1,0 +1,14 @@
+- name: run bundler
+  bundler:
+    state: present
+    chdir: "{{ exec_path }}"
+  become: yes
+  become_user: "{{ deploy_user_name }}"
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+- name: restart redis
+  service:
+    name: redis-server
+    state: restarted

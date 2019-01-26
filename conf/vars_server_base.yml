@@ -1,6 +1,7 @@
 ---
 packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler ]
 deploy_user_name: deployer
+web_user_name: www-data
 deploy_user_group: www-data
 deploy_user_shell: /bin/bash
 sudo_nopass_entry: "ALL=(ALL:ALL) NOPASSWD: ALL"

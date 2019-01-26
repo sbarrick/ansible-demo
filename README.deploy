@@ -1,0 +1,7 @@
+# Example deploy (after server setup run), specificy target hostgroup as extra vars:
+
+ansible-playbook -i hosts playbooks/ansistrano_deploy.yml --extra-vars '{"hostgroup":"vc-server"}'
+
+# Example rollback (to previous release):
+
+ansible-playbook -i hosts playbooks/ansistrano_rollback.yml --extra-vars '{"hostgroup":"vc-server"}'

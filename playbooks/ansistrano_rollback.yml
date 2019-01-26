@@ -4,7 +4,8 @@
   become: yes
   become_method: sudo
   vars_files:
-  - ../conf/vars_ansistrano.yml
+    - ../conf/vars_ansistrano.yml
+    - ../conf/vars_server_base.yml
   vars:
     ansistrano_deploy_via: git
   roles:

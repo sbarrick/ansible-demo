@@ -1,7 +1,15 @@
+- name: set permissions
+  file: 
+    path: "{{ deploy_path }}"
+    state: directory
+    recurse: yes
+    owner: deployer
+    group: www-data
+    mode: 0775
 - name: run bundler
   bundler:
     state: present
-    chdir: "{{ exec_path }}"
+    chdir: "{{ deploy_path }}"
   become: yes
   become_user: "{{ deploy_user_name }}"
 - name: restart nginx

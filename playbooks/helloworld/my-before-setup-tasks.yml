@@ -1,0 +1,8 @@
+---
+- name: deploy code
+  local_action:
+    module: git
+    repo: "{{ repo_path }}"
+    dest: "{{ checkout_path }}"
+    version: master
+  become: no

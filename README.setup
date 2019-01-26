@@ -1,0 +1,3 @@
+# Initial server setup, specificy target hostgroup as extra vars::
+
+ansible-playbook -i hosts server-setup.yml --extra-vars '{"hostgroup":"vc-server"}'

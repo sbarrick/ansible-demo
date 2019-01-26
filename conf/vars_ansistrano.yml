@@ -1,12 +1,12 @@
 ---  
-ansistrano_deploy_from: "~/git/barrick-devops-test/" # Where my local project is (relative or absolute path)
+ansistrano_deploy_from: "{{ checkout_path }}" # Where my local project is (relative or absolute path)
 ansistrano_deploy_to: "/home/deployer/www/prod" # Base path to deploy to.
 ansistrano_version_dir: "releases" # Releases folder name
 ansistrano_current_dir: "current" # Softlink name. You should rarely changed it.
 ansistrano_current_via: "symlink" # Deployment strategy who code should be deployed to current path. Options are symlink or rsync
 ansistrano_keep_releases: 5 # Releases to keep after a new deployment. See "Pruning old releases".
 ansistrano_release_path: "~/www/prod/"
-exec_path: /home/deployer/www/current
+deploy_path: /home/deployer/www/prod/current
 
   # Arrays of directories and files to be shared.
   # The following arrays of directories and files will be symlinked to the current release directory after the 'update-code' step and its callbacks
@@ -40,7 +40,7 @@ ansistrano_rsync_path: "" # See [ansible synchronize module](http://docs.ansible
   #ansistrano_rsync_use_ssh_args: no # See [ansible synchronize module](http://docs.ansible.com/ansible/synchronize_module.html). If set yes, use the ssh_args specified in ansible.cfg.
 
   # Variables used in the Git deployment strategy
-ansistrano_git_repo: git@github.com:veracross/barrick-devops-test.git # Location of the git repository
+ansistrano_git_repo: "{{ repo_path }}" # Location of the git repository
 ansistrano_git_branch: master # What version of the repository to check out. This can be the full 40-character SHA-1 hash, the literal string HEAD, a branch name, or a tag name
 ansistrano_git_repo_tree: "" # If specified the subtree of the repository to deploy
 ansistrano_git_identity_key_path: "~/.ssh/" # If specified this file is copied over and used as the identity key for the git commands, path is relative to the playbook in which it is used
@@ -56,7 +56,7 @@ ansistrano_git_depth: 1 # Additional history truncated to the specified number o
   #ansistrano_download_headers: "" # no default as this is only supported from Ansible 2.0
 
   # Hooks: custom tasks if you need them
-#  ansistrano_before_setup_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-before-setup-tasks.yml"
+ansistrano_before_setup_tasks_file: "{{ playbook_dir }}/helloworld/my-before-setup-tasks.yml"
 #  ansistrano_after_setup_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-after-setup-tasks.yml"
 #  ansistrano_before_update_code_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-before-update-code-tasks.yml"
 #  ansistrano_after_update_code_tasks_file: "{{ playbook_dir }}/<your-deployment-config>/my-after-update-code-tasks.yml"

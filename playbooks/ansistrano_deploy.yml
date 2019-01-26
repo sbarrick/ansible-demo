@@ -1,6 +1,5 @@
 --- # ansistrano dedicated deploy playbook
 - hosts: "{{ hostgroup }}"
-  user: test
   become: yes
   become_method: sudo
   vars_files:

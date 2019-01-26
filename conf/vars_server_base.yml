@@ -1,8 +1,12 @@
 ---
-packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler ]
+checkout_path: ~/code_checkout/
 deploy_user_name: deployer
-web_user_name: www-data
 deploy_user_group: www-data
 deploy_user_shell: /bin/bash
+deploy_path: /home/deployer/www/prod/current
+git_force: yes
+packages: [ nginx-core, nginx-common, ruby, capistrano, ruby-bundler ]
+passenger_app_root: /home/deployer/www/prod/current/public
+repo_path: git@github.com:veracross/barrick-devops-test.git
 sudo_nopass_entry: "ALL=(ALL:ALL) NOPASSWD: ALL"
 # add key

@@ -1,1 +1,3 @@
 ---
+redis_requirepass: "hithere"
+redis_env_var: "REDIS_PW"
